@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Widget integration</title>
+</head>
+<body BGCOLOR="FFFFFF">
+    <p>
+        <b>Widget integration.</b>
+        <hr>
+        <button onclick="pay()">Auth!!!</button>
+        <button onclick="charge()">Charge!!!</button>
+    </p>
+    <script src="pitech-payments-widget.js"></script>
+    <script>
+        function pay() {
+            var widget = PitechPaymentsWidget();
+            widget.pay("auth", {
+                "appId": "DtkTYUsnCXHkxapSQ-3QuWJYqPfB01Wn",
+                "amount": 1000.30,
+                "extClientRef": "77010000000",
+                "currency": "KZT",
+                "description": "Тестовый платеж",
+                "email": "tony@stark.com",
+                "extOrdersId": "test01",
+                "errorReturnUrl": "https://example.com/error",
+                "successReturnUrl": "https://example.com/success",
+                "payload": {
+                    "name": "Tony Stark",
+                    "firstName": "Tony",
+                    "lastName": "Stark",
+                    "birthDate": "1988-02-03",
+                    "phone": "77010000000"
+                }
+            }, {
+                onSuccess: (result => console.log("onSuccess", result)),
+                onFailure: (result => console.log("onFailure", result)),
+                onComplete: () => console.log('completed')
+            });
+        }
+
+        function charge() {
+            var widget = PitechPaymentsWidget();
+            widget.pay("charge", {
+                "appId": "DtkTYUsnCXHkxapSQ-3QuWJYqPfB01Wn", // id из личного кабинета
+                "amount": 1000.30, // Сумма
+                "extClientRef": "77010000000",
+                "currency": "KZT", // Валюта
+                "description": "Тестовый платеж", // Описание платежа
+                "email": "tony@stark.com", // Email плательщика (необязательно)
+                "extOrdersId": "test01", // Идентификатор заказа в торговой системе
+                "errorReturnUrl": "https://example.com/error", // Ссылка для перенаправления клиентов после неудачной оплаты
+                "successReturnUrl": "https://example.com/success", // Ссылка для перенаправления клиентов после удачной оплаты
+                "payload": { // Дополнительные данные (требуются для аналитики)
+                    "name": "Tony Stark",
+                    "firstName": "Tony",
+                    "lastName": "Stark",
+                    "birthDate": "1988-02-03",
+                    "phone": "77010000000"
+                }
+            }, {
+                onSuccess: (result => console.log("onSuccess", result)), // Вызывается при успешной оплате
+                onFailure: (result => console.log("onFailure", result)), // Вызывается при неуспешной оплате
+                onComplete: () => console.log('completed') // Вызывается как только проходит транзакция (закрывает окно оплаты)
+            });
+        }
+    </script>
+</body>
+</html>
